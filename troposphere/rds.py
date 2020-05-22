@@ -420,6 +420,7 @@ class ScalingConfiguration(AWSProperty):
         'MaxCapacity': (validate_capacity, False),
         'MinCapacity': (validate_capacity, False),
         'SecondsUntilAutoPause': (positive_integer, False),
+        'TimeoutAction': (basestring, False),
     }
 
 
