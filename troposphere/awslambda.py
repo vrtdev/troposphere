@@ -103,7 +103,7 @@ class CodeSigningConfig(AWSObject):
 
 class OnFailure(AWSProperty):
     """
-    `OnFailure <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-eventinvokeconfig-destinationconfig-onfailure.html>`__
+    `OnFailure <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-eventinvokeconfig-onfailure.html>`__
     """
 
     props: PropsDictType = {
@@ -113,7 +113,7 @@ class OnFailure(AWSProperty):
 
 class OnSuccess(AWSProperty):
     """
-    `OnSuccess <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-eventinvokeconfig-destinationconfig-onsuccess.html>`__
+    `OnSuccess <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-eventinvokeconfig-onsuccess.html>`__
     """
 
     props: PropsDictType = {
@@ -351,6 +351,19 @@ class ImageConfig(AWSProperty):
         validate_image_config(self)
 
 
+class LoggingConfig(AWSProperty):
+    """
+    `LoggingConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-function-loggingconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "ApplicationLogLevel": (str, False),
+        "LogFormat": (str, False),
+        "LogGroup": (str, False),
+        "SystemLogLevel": (str, False),
+    }
+
+
 class RuntimeManagementConfig(AWSProperty):
     """
     `RuntimeManagementConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-function-runtimemanagementconfig.html>`__
@@ -415,9 +428,9 @@ class Function(AWSObject):
         "ImageConfig": (ImageConfig, False),
         "KmsKeyArn": (str, False),
         "Layers": ([str], False),
+        "LoggingConfig": (LoggingConfig, False),
         "MemorySize": (validate_memory_size, False),
         "PackageType": (validate_package_type, False),
-        "Policy": (dict, False),
         "ReservedConcurrentExecutions": (integer, False),
         "Role": (str, True),
         "Runtime": (str, False),
