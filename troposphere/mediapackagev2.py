@@ -18,8 +18,8 @@ class Channel(AWSObject):
     resource_type = "AWS::MediaPackageV2::Channel"
 
     props: PropsDictType = {
-        "ChannelGroupName": (str, False),
-        "ChannelName": (str, False),
+        "ChannelGroupName": (str, True),
+        "ChannelName": (str, True),
         "Description": (str, False),
         "Tags": (Tags, False),
     }
@@ -33,7 +33,7 @@ class ChannelGroup(AWSObject):
     resource_type = "AWS::MediaPackageV2::ChannelGroup"
 
     props: PropsDictType = {
-        "ChannelGroupName": (str, False),
+        "ChannelGroupName": (str, True),
         "Description": (str, False),
         "Tags": (Tags, False),
     }
@@ -47,9 +47,22 @@ class ChannelPolicy(AWSObject):
     resource_type = "AWS::MediaPackageV2::ChannelPolicy"
 
     props: PropsDictType = {
-        "ChannelGroupName": (str, False),
-        "ChannelName": (str, False),
+        "ChannelGroupName": (str, True),
+        "ChannelName": (str, True),
         "Policy": (dict, True),
+    }
+
+
+class FilterConfiguration(AWSProperty):
+    """
+    `FilterConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-mediapackagev2-originendpoint-filterconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "End": (str, False),
+        "ManifestFilter": (str, False),
+        "Start": (str, False),
+        "TimeDelaySeconds": (integer, False),
     }
 
 
@@ -70,6 +83,7 @@ class HlsManifestConfiguration(AWSProperty):
 
     props: PropsDictType = {
         "ChildManifestName": (str, False),
+        "FilterConfiguration": (FilterConfiguration, False),
         "ManifestName": (str, True),
         "ManifestWindowSeconds": (integer, False),
         "ProgramDateTimeIntervalSeconds": (integer, False),
@@ -85,6 +99,7 @@ class LowLatencyHlsManifestConfiguration(AWSProperty):
 
     props: PropsDictType = {
         "ChildManifestName": (str, False),
+        "FilterConfiguration": (FilterConfiguration, False),
         "ManifestName": (str, True),
         "ManifestWindowSeconds": (integer, False),
         "ProgramDateTimeIntervalSeconds": (integer, False),
@@ -176,13 +191,13 @@ class OriginEndpoint(AWSObject):
     resource_type = "AWS::MediaPackageV2::OriginEndpoint"
 
     props: PropsDictType = {
-        "ChannelGroupName": (str, False),
-        "ChannelName": (str, False),
-        "ContainerType": (str, True),
+        "ChannelGroupName": (str, True),
+        "ChannelName": (str, True),
+        "ContainerType": (str, False),
         "Description": (str, False),
         "HlsManifests": ([HlsManifestConfiguration], False),
         "LowLatencyHlsManifests": ([LowLatencyHlsManifestConfiguration], False),
-        "OriginEndpointName": (str, False),
+        "OriginEndpointName": (str, True),
         "Segment": (Segment, False),
         "StartoverWindowSeconds": (integer, False),
         "Tags": (Tags, False),
@@ -197,9 +212,9 @@ class OriginEndpointPolicy(AWSObject):
     resource_type = "AWS::MediaPackageV2::OriginEndpointPolicy"
 
     props: PropsDictType = {
-        "ChannelGroupName": (str, False),
-        "ChannelName": (str, False),
-        "OriginEndpointName": (str, False),
+        "ChannelGroupName": (str, True),
+        "ChannelName": (str, True),
+        "OriginEndpointName": (str, True),
         "Policy": (dict, True),
     }
 

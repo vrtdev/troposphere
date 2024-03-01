@@ -162,6 +162,17 @@ class AnalysisDefaults(AWSProperty):
     }
 
 
+class AssetOptions(AWSProperty):
+    """
+    `AssetOptions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-assetoptions.html>`__
+    """
+
+    props: PropsDictType = {
+        "Timezone": (str, False),
+        "WeekStart": (str, False),
+    }
+
+
 class CalculatedField(AWSProperty):
     """
     `CalculatedField <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-calculatedfield.html>`__
@@ -5670,8 +5681,31 @@ class AnalysisDefinition(AWSProperty):
         "ColumnConfigurations": ([ColumnConfiguration], False),
         "DataSetIdentifierDeclarations": ([DataSetIdentifierDeclaration], True),
         "FilterGroups": ([FilterGroup], False),
+        "Options": (AssetOptions, False),
         "ParameterDeclarations": ([ParameterDeclaration], False),
         "Sheets": ([SheetDefinition], False),
+    }
+
+
+class Entity(AWSProperty):
+    """
+    `Entity <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-entity.html>`__
+    """
+
+    props: PropsDictType = {
+        "Path": (str, False),
+    }
+
+
+class AnalysisError(AWSProperty):
+    """
+    `AnalysisError <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-analysis-analysiserror.html>`__
+    """
+
+    props: PropsDictType = {
+        "Message": (str, False),
+        "Type": (str, False),
+        "ViolatedEntities": ([Entity], False),
     }
 
 
@@ -5772,7 +5806,17 @@ class ResourcePermission(AWSProperty):
     props: PropsDictType = {
         "Actions": ([str], True),
         "Principal": (str, True),
-        "Resource": (str, False),
+    }
+
+
+class Sheet(AWSProperty):
+    """
+    `Sheet <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-sheet.html>`__
+    """
+
+    props: PropsDictType = {
+        "Name": (str, False),
+        "SheetId": (str, False),
     }
 
 
@@ -5797,9 +5841,11 @@ class Analysis(AWSObject):
         "AnalysisId": (str, True),
         "AwsAccountId": (str, True),
         "Definition": (AnalysisDefinition, False),
+        "Errors": ([AnalysisError], False),
         "Name": (str, True),
         "Parameters": (Parameters, False),
         "Permissions": ([ResourcePermission], False),
+        "Sheets": ([Sheet], False),
         "SourceEntity": (AnalysisSourceEntity, False),
         "Status": (str, False),
         "Tags": (Tags, False),
@@ -5983,8 +6029,19 @@ class DashboardVersionDefinition(AWSProperty):
         "ColumnConfigurations": ([ColumnConfiguration], False),
         "DataSetIdentifierDeclarations": ([DataSetIdentifierDeclaration], True),
         "FilterGroups": ([FilterGroup], False),
+        "Options": (AssetOptions, False),
         "ParameterDeclarations": ([ParameterDeclaration], False),
         "Sheets": ([SheetDefinition], False),
+    }
+
+
+class LinkSharingConfiguration(AWSProperty):
+    """
+    `LinkSharingConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-dashboard-linksharingconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "Permissions": ([ResourcePermission], False),
     }
 
 
@@ -6000,6 +6057,8 @@ class Dashboard(AWSObject):
         "DashboardId": (str, True),
         "DashboardPublishOptions": (DashboardPublishOptions, False),
         "Definition": (DashboardVersionDefinition, False),
+        "LinkEntities": ([str], False),
+        "LinkSharingConfiguration": (LinkSharingConfiguration, False),
         "Name": (str, True),
         "Parameters": (Parameters, False),
         "Permissions": ([ResourcePermission], False),
@@ -6271,6 +6330,7 @@ class CastColumnTypeOperation(AWSProperty):
         "ColumnName": (str, True),
         "Format": (str, False),
         "NewColumnType": (str, True),
+        "SubType": (str, False),
     }
 
 
@@ -6419,6 +6479,7 @@ class InputColumn(AWSProperty):
 
     props: PropsDictType = {
         "Name": (str, True),
+        "SubType": (str, False),
         "Type": (str, True),
     }
 
@@ -6766,6 +6827,19 @@ class SqlServerParameters(AWSProperty):
     }
 
 
+class StarburstParameters(AWSProperty):
+    """
+    `StarburstParameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-datasource-starburstparameters.html>`__
+    """
+
+    props: PropsDictType = {
+        "Catalog": (str, True),
+        "Host": (str, True),
+        "Port": (double, True),
+        "ProductType": (str, False),
+    }
+
+
 class TeradataParameters(AWSProperty):
     """
     `TeradataParameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-datasource-teradataparameters.html>`__
@@ -6773,6 +6847,18 @@ class TeradataParameters(AWSProperty):
 
     props: PropsDictType = {
         "Database": (str, True),
+        "Host": (str, True),
+        "Port": (double, True),
+    }
+
+
+class TrinoParameters(AWSProperty):
+    """
+    `TrinoParameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-datasource-trinoparameters.html>`__
+    """
+
+    props: PropsDictType = {
+        "Catalog": (str, True),
         "Host": (str, True),
         "Port": (double, True),
     }
@@ -6801,7 +6887,9 @@ class DataSourceParameters(AWSProperty):
         "SnowflakeParameters": (SnowflakeParameters, False),
         "SparkParameters": (SparkParameters, False),
         "SqlServerParameters": (SqlServerParameters, False),
+        "StarburstParameters": (StarburstParameters, False),
         "TeradataParameters": (TeradataParameters, False),
+        "TrinoParameters": (TrinoParameters, False),
     }
 
 
@@ -7032,6 +7120,7 @@ class TemplateVersionDefinition(AWSProperty):
         "ColumnConfigurations": ([ColumnConfiguration], False),
         "DataSetConfigurations": ([DataSetConfiguration], True),
         "FilterGroups": ([FilterGroup], False),
+        "Options": (AssetOptions, False),
         "ParameterDeclarations": ([ParameterDeclaration], False),
         "Sheets": ([SheetDefinition], False),
     }
@@ -7566,6 +7655,7 @@ class Topic(AWSObject):
         "Description": (str, False),
         "Name": (str, False),
         "TopicId": (str, False),
+        "UserExperienceVersion": (str, False),
     }
 
 
@@ -7586,28 +7676,6 @@ class VPCConnection(AWSObject):
         "SubnetIds": ([str], False),
         "Tags": (Tags, False),
         "VPCConnectionId": (str, False),
-    }
-
-
-class Entity(AWSProperty):
-    """
-    `Entity <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-entity.html>`__
-    """
-
-    props: PropsDictType = {
-        "Path": (str, False),
-    }
-
-
-class AnalysisError(AWSProperty):
-    """
-    `AnalysisError <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-analysis-analysiserror.html>`__
-    """
-
-    props: PropsDictType = {
-        "Message": (str, False),
-        "Type": (str, False),
-        "ViolatedEntities": ([Entity], False),
     }
 
 
@@ -7634,17 +7702,6 @@ class NetworkInterface(AWSProperty):
         "NetworkInterfaceId": (str, False),
         "Status": (str, False),
         "SubnetId": (str, False),
-    }
-
-
-class Sheet(AWSProperty):
-    """
-    `Sheet <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-quicksight-template-sheet.html>`__
-    """
-
-    props: PropsDictType = {
-        "Name": (str, False),
-        "SheetId": (str, False),
     }
 
 
