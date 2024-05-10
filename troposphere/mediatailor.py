@@ -68,6 +68,16 @@ class SlateSource(AWSProperty):
     }
 
 
+class TimeShiftConfiguration(AWSProperty):
+    """
+    `TimeShiftConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-mediatailor-channel-timeshiftconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "MaxTimeDelaySeconds": (double, True),
+    }
+
+
 class Channel(AWSObject):
     """
     `Channel <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-mediatailor-channel.html>`__
@@ -76,6 +86,7 @@ class Channel(AWSObject):
     resource_type = "AWS::MediaTailor::Channel"
 
     props: PropsDictType = {
+        "Audiences": ([str], False),
         "ChannelName": (str, True),
         "FillerSlate": (SlateSource, False),
         "LogConfiguration": (LogConfigurationForChannel, False),
@@ -83,6 +94,7 @@ class Channel(AWSObject):
         "PlaybackMode": (str, True),
         "Tags": (Tags, False),
         "Tier": (str, False),
+        "TimeShiftConfiguration": (TimeShiftConfiguration, False),
     }
 
 

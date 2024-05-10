@@ -51,6 +51,7 @@ class AutoScalingGroupProvider(AWSProperty):
 
     props: PropsDictType = {
         "AutoScalingGroupArn": (str, True),
+        "ManagedDraining": (str, False),
         "ManagedScaling": (ManagedScaling, False),
         "ManagedTerminationProtection": (str, False),
     }
@@ -333,6 +334,39 @@ class ServiceConnectClientAlias(AWSProperty):
     }
 
 
+class ServiceConnectTlsCertificateAuthority(AWSProperty):
+    """
+    `ServiceConnectTlsCertificateAuthority <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-service-serviceconnecttlscertificateauthority.html>`__
+    """
+
+    props: PropsDictType = {
+        "AwsPcaAuthorityArn": (str, False),
+    }
+
+
+class ServiceConnectTlsConfiguration(AWSProperty):
+    """
+    `ServiceConnectTlsConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-service-serviceconnecttlsconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "IssuerCertificateAuthority": (ServiceConnectTlsCertificateAuthority, True),
+        "KmsKey": (str, False),
+        "RoleArn": (str, False),
+    }
+
+
+class TimeoutConfiguration(AWSProperty):
+    """
+    `TimeoutConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-service-timeoutconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "IdleTimeoutSeconds": (integer, False),
+        "PerRequestTimeoutSeconds": (integer, False),
+    }
+
+
 class ServiceConnectService(AWSProperty):
     """
     `ServiceConnectService <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-service-serviceconnectservice.html>`__
@@ -343,6 +377,8 @@ class ServiceConnectService(AWSProperty):
         "DiscoveryName": (str, False),
         "IngressPortOverride": (integer, False),
         "PortName": (str, True),
+        "Timeout": (TimeoutConfiguration, False),
+        "Tls": (ServiceConnectTlsConfiguration, False),
     }
 
 
@@ -369,6 +405,48 @@ class ServiceRegistry(AWSProperty):
         "ContainerPort": (integer, False),
         "Port": (integer, False),
         "RegistryArn": (str, False),
+    }
+
+
+class EBSTagSpecification(AWSProperty):
+    """
+    `EBSTagSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-service-ebstagspecification.html>`__
+    """
+
+    props: PropsDictType = {
+        "PropagateTags": (str, False),
+        "ResourceType": (str, True),
+        "Tags": (Tags, False),
+    }
+
+
+class ServiceManagedEBSVolumeConfiguration(AWSProperty):
+    """
+    `ServiceManagedEBSVolumeConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-service-servicemanagedebsvolumeconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "Encrypted": (boolean, False),
+        "FilesystemType": (str, False),
+        "Iops": (integer, False),
+        "KmsKeyId": (str, False),
+        "RoleArn": (str, True),
+        "SizeInGiB": (integer, False),
+        "SnapshotId": (str, False),
+        "TagSpecifications": ([EBSTagSpecification], False),
+        "Throughput": (integer, False),
+        "VolumeType": (str, False),
+    }
+
+
+class ServiceVolumeConfiguration(AWSProperty):
+    """
+    `ServiceVolumeConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-service-servicevolumeconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "ManagedEBSVolume": (ServiceManagedEBSVolumeConfiguration, False),
+        "Name": (str, True),
     }
 
 
@@ -402,6 +480,7 @@ class Service(AWSObject):
         "ServiceRegistries": ([ServiceRegistry], False),
         "Tags": (Tags, False),
         "TaskDefinition": (str, False),
+        "VolumeConfigurations": ([ServiceVolumeConfiguration], False),
     }
 
 
@@ -615,6 +694,7 @@ class ContainerDefinition(AWSProperty):
     props: PropsDictType = {
         "Command": ([str], False),
         "Cpu": (integer, False),
+        "CredentialSpecs": ([str], False),
         "DependsOn": ([ContainerDependency], False),
         "DisableNetworking": (boolean, False),
         "DnsSearchDomains": ([str], False),
@@ -741,6 +821,29 @@ class EFSVolumeConfiguration(AWSProperty):
     }
 
 
+class FSxAuthorizationConfig(AWSProperty):
+    """
+    `FSxAuthorizationConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-taskdefinition-fsxauthorizationconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "CredentialsParameter": (str, True),
+        "Domain": (str, True),
+    }
+
+
+class FSxWindowsFileServerVolumeConfiguration(AWSProperty):
+    """
+    `FSxWindowsFileServerVolumeConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-taskdefinition-fsxwindowsfileservervolumeconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "AuthorizationConfig": (FSxAuthorizationConfig, False),
+        "FileSystemId": (str, True),
+        "RootDirectory": (str, True),
+    }
+
+
 class Host(AWSProperty):
     """
     `Host <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecs-taskdefinition-hostvolumeproperties.html>`__
@@ -757,8 +860,13 @@ class Volume(AWSProperty):
     """
 
     props: PropsDictType = {
+        "ConfiguredAtLaunch": (boolean, False),
         "DockerVolumeConfiguration": (DockerVolumeConfiguration, False),
         "EFSVolumeConfiguration": (EFSVolumeConfiguration, False),
+        "FSxWindowsFileServerVolumeConfiguration": (
+            FSxWindowsFileServerVolumeConfiguration,
+            False,
+        ),
         "Host": (Host, False),
         "Name": (str, False),
     }
@@ -820,5 +928,6 @@ class TaskSet(AWSObject):
         "Scale": (Scale, False),
         "Service": (str, True),
         "ServiceRegistries": ([ServiceRegistry], False),
+        "Tags": (Tags, False),
         "TaskDefinition": (str, True),
     }

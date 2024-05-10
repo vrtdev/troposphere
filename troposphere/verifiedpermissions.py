@@ -9,6 +9,16 @@
 from . import AWSObject, AWSProperty, PropsDictType
 
 
+class CognitoGroupConfiguration(AWSProperty):
+    """
+    `CognitoGroupConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-verifiedpermissions-identitysource-cognitogroupconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "GroupEntityType": (str, True),
+    }
+
+
 class CognitoUserPoolConfiguration(AWSProperty):
     """
     `CognitoUserPoolConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-verifiedpermissions-identitysource-cognitouserpoolconfiguration.html>`__
@@ -16,6 +26,7 @@ class CognitoUserPoolConfiguration(AWSProperty):
 
     props: PropsDictType = {
         "ClientIds": ([str], False),
+        "GroupConfiguration": (CognitoGroupConfiguration, False),
         "UserPoolArn": (str, True),
     }
 
@@ -39,7 +50,7 @@ class IdentitySource(AWSObject):
 
     props: PropsDictType = {
         "Configuration": (IdentitySourceConfiguration, True),
-        "PolicyStoreId": (str, False),
+        "PolicyStoreId": (str, True),
         "PrincipalEntityType": (str, False),
     }
 
@@ -98,7 +109,7 @@ class Policy(AWSObject):
 
     props: PropsDictType = {
         "Definition": (PolicyDefinition, True),
-        "PolicyStoreId": (str, False),
+        "PolicyStoreId": (str, True),
     }
 
 
@@ -130,6 +141,7 @@ class PolicyStore(AWSObject):
     resource_type = "AWS::VerifiedPermissions::PolicyStore"
 
     props: PropsDictType = {
+        "Description": (str, False),
         "Schema": (SchemaDefinition, False),
         "ValidationSettings": (ValidationSettings, True),
     }
@@ -144,19 +156,6 @@ class PolicyTemplate(AWSObject):
 
     props: PropsDictType = {
         "Description": (str, False),
-        "PolicyStoreId": (str, False),
+        "PolicyStoreId": (str, True),
         "Statement": (str, True),
-    }
-
-
-class IdentitySourceDetails(AWSProperty):
-    """
-    `IdentitySourceDetails <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-verifiedpermissions-identitysource-identitysourcedetails.html>`__
-    """
-
-    props: PropsDictType = {
-        "ClientIds": ([str], False),
-        "DiscoveryUrl": (str, False),
-        "OpenIdIssuer": (str, False),
-        "UserPoolArn": (str, False),
     }

@@ -127,6 +127,17 @@ class Connection(AWSObject):
     }
 
 
+class LakeFormationConfiguration(AWSProperty):
+    """
+    `LakeFormationConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-glue-crawler-lakeformationconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "AccountId": (str, False),
+        "UseLakeFormationCredentials": (boolean, False),
+    }
+
+
 class RecrawlPolicy(AWSProperty):
     """
     `RecrawlPolicy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-glue-crawler-recrawlpolicy.html>`__
@@ -275,6 +286,7 @@ class Crawler(AWSObject):
         "CrawlerSecurityConfiguration": (str, False),
         "DatabaseName": (str, False),
         "Description": (str, False),
+        "LakeFormationConfiguration": (LakeFormationConfiguration, False),
         "Name": (str, False),
         "RecrawlPolicy": (RecrawlPolicy, False),
         "Role": (str, True),
@@ -283,6 +295,21 @@ class Crawler(AWSObject):
         "TablePrefix": (str, False),
         "Tags": (dict, False),
         "Targets": (Targets, True),
+    }
+
+
+class CustomEntityType(AWSObject):
+    """
+    `CustomEntityType <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-glue-customentitytype.html>`__
+    """
+
+    resource_type = "AWS::Glue::CustomEntityType"
+
+    props: PropsDictType = {
+        "ContextWords": ([str], False),
+        "Name": (str, False),
+        "RegexString": (str, False),
+        "Tags": (dict, False),
     }
 
 
@@ -304,6 +331,7 @@ class EncryptionAtRest(AWSProperty):
 
     props: PropsDictType = {
         "CatalogEncryptionMode": (str, False),
+        "CatalogEncryptionServiceRole": (str, False),
         "SseAwsKmsKeyId": (str, False),
     }
 
@@ -964,6 +992,33 @@ class Table(AWSObject):
         "DatabaseName": (str, True),
         "OpenTableFormatInput": (OpenTableFormatInput, False),
         "TableInput": (TableInput, True),
+    }
+
+
+class TableOptimizerConfiguration(AWSProperty):
+    """
+    `TableOptimizerConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-glue-tableoptimizer-tableoptimizerconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "Enabled": (boolean, True),
+        "RoleArn": (str, True),
+    }
+
+
+class TableOptimizer(AWSObject):
+    """
+    `TableOptimizer <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-glue-tableoptimizer.html>`__
+    """
+
+    resource_type = "AWS::Glue::TableOptimizer"
+
+    props: PropsDictType = {
+        "CatalogId": (str, True),
+        "DatabaseName": (str, True),
+        "TableName": (str, True),
+        "TableOptimizerConfiguration": (TableOptimizerConfiguration, True),
+        "Type": (str, True),
     }
 
 

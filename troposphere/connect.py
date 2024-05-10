@@ -126,6 +126,7 @@ class Instance(AWSObject):
         "DirectoryId": (str, False),
         "IdentityManagementType": (str, True),
         "InstanceAlias": (str, False),
+        "Tags": (Tags, False),
     }
 
 
@@ -166,7 +167,7 @@ class KinesisVideoStreamConfig(AWSProperty):
     """
 
     props: PropsDictType = {
-        "EncryptionConfig": (EncryptionConfig, False),
+        "EncryptionConfig": (EncryptionConfig, True),
         "Prefix": (str, True),
         "RetentionPeriodHours": (double, True),
     }
@@ -224,12 +225,37 @@ class PhoneNumber(AWSObject):
     resource_type = "AWS::Connect::PhoneNumber"
 
     props: PropsDictType = {
-        "CountryCode": (str, True),
+        "CountryCode": (str, False),
         "Description": (str, False),
         "Prefix": (str, False),
+        "SourcePhoneNumberArn": (str, False),
         "Tags": (Tags, False),
         "TargetArn": (str, True),
-        "Type": (str, True),
+        "Type": (str, False),
+    }
+
+
+class Values(AWSProperty):
+    """
+    `Values <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-connect-predefinedattribute-values.html>`__
+    """
+
+    props: PropsDictType = {
+        "StringList": ([str], False),
+    }
+
+
+class PredefinedAttribute(AWSObject):
+    """
+    `PredefinedAttribute <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-connect-predefinedattribute.html>`__
+    """
+
+    resource_type = "AWS::Connect::PredefinedAttribute"
+
+    props: PropsDictType = {
+        "InstanceArn": (str, True),
+        "Name": (str, True),
+        "Values": (Values, True),
     }
 
 
@@ -406,6 +432,40 @@ class RoutingProfile(AWSObject):
     }
 
 
+class FieldIdentifier(AWSProperty):
+    """
+    `FieldIdentifier <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-connect-tasktemplate-fieldidentifier.html>`__
+    """
+
+    props: PropsDictType = {
+        "Name": (str, True),
+    }
+
+
+class Field(AWSProperty):
+    """
+    `Field <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-connect-tasktemplate-field.html>`__
+    """
+
+    props: PropsDictType = {
+        "Description": (str, False),
+        "Id": (FieldIdentifier, True),
+        "SingleSelectOptions": ([str], False),
+        "Type": (str, True),
+    }
+
+
+class CreateCaseAction(AWSProperty):
+    """
+    `CreateCaseAction <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-connect-rule-createcaseaction.html>`__
+    """
+
+    props: PropsDictType = {
+        "Fields": ([Field], True),
+        "TemplateId": (str, True),
+    }
+
+
 class EventBridgeAction(AWSProperty):
     """
     `EventBridgeAction <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-connect-rule-eventbridgeaction.html>`__
@@ -465,6 +525,16 @@ class TaskAction(AWSProperty):
     }
 
 
+class UpdateCaseAction(AWSProperty):
+    """
+    `UpdateCaseAction <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-connect-rule-updatecaseaction.html>`__
+    """
+
+    props: PropsDictType = {
+        "Fields": ([Field], True),
+    }
+
+
 class Actions(AWSProperty):
     """
     `Actions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-connect-rule-actions.html>`__
@@ -472,9 +542,12 @@ class Actions(AWSProperty):
 
     props: PropsDictType = {
         "AssignContactCategoryActions": (Tags, False),
+        "CreateCaseActions": ([CreateCaseAction], False),
+        "EndAssociatedTasksActions": (Tags, False),
         "EventBridgeActions": ([EventBridgeAction], False),
         "SendNotificationActions": ([SendNotificationAction], False),
         "TaskActions": ([TaskAction], False),
+        "UpdateCaseActions": ([UpdateCaseAction], False),
     }
 
 
@@ -520,6 +593,17 @@ class SecurityKey(AWSObject):
     }
 
 
+class Application(AWSProperty):
+    """
+    `Application <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-connect-securityprofile-application.html>`__
+    """
+
+    props: PropsDictType = {
+        "ApplicationPermissions": ([str], True),
+        "Namespace": (str, True),
+    }
+
+
 class SecurityProfile(AWSObject):
     """
     `SecurityProfile <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-connect-securityprofile.html>`__
@@ -528,23 +612,16 @@ class SecurityProfile(AWSObject):
     resource_type = "AWS::Connect::SecurityProfile"
 
     props: PropsDictType = {
+        "AllowedAccessControlHierarchyGroupId": (str, False),
         "AllowedAccessControlTags": (Tags, False),
+        "Applications": ([Application], False),
         "Description": (str, False),
+        "HierarchyRestrictedResources": ([str], False),
         "InstanceArn": (str, True),
         "Permissions": ([str], False),
         "SecurityProfileName": (str, True),
         "TagRestrictedResources": ([str], False),
         "Tags": (Tags, False),
-    }
-
-
-class FieldIdentifier(AWSProperty):
-    """
-    `FieldIdentifier <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-connect-tasktemplate-fieldidentifier.html>`__
-    """
-
-    props: PropsDictType = {
-        "Name": (str, True),
     }
 
 
@@ -598,19 +675,6 @@ class DefaultFieldValue(AWSProperty):
     props: PropsDictType = {
         "DefaultValue": (str, True),
         "Id": (FieldIdentifier, True),
-    }
-
-
-class Field(AWSProperty):
-    """
-    `Field <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-connect-tasktemplate-field.html>`__
-    """
-
-    props: PropsDictType = {
-        "Description": (str, False),
-        "Id": (FieldIdentifier, True),
-        "SingleSelectOptions": ([str], False),
-        "Type": (str, True),
     }
 
 
@@ -677,6 +741,18 @@ class UserPhoneConfig(AWSProperty):
     }
 
 
+class UserProficiency(AWSProperty):
+    """
+    `UserProficiency <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-connect-user-userproficiency.html>`__
+    """
+
+    props: PropsDictType = {
+        "AttributeName": (str, True),
+        "AttributeValue": (str, True),
+        "Level": (double, True),
+    }
+
+
 class User(AWSObject):
     """
     `User <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-connect-user.html>`__
@@ -694,6 +770,7 @@ class User(AWSObject):
         "RoutingProfileArn": (str, True),
         "SecurityProfileArns": ([str], True),
         "Tags": (Tags, False),
+        "UserProficiencies": ([UserProficiency], False),
         "Username": (str, True),
     }
 
@@ -741,4 +818,17 @@ class ViewVersion(AWSObject):
         "VersionDescription": (str, False),
         "ViewArn": (str, True),
         "ViewContentSha256": (str, False),
+    }
+
+
+class FieldValue(AWSProperty):
+    """
+    `FieldValue <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-connect-rule-fieldvalue.html>`__
+    """
+
+    props: PropsDictType = {
+        "BooleanValue": (boolean, False),
+        "DoubleValue": (double, False),
+        "EmptyValue": (dict, False),
+        "StringValue": (str, False),
     }

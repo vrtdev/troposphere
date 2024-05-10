@@ -496,6 +496,7 @@ class EmailChannel(AWSObject):
         "Enabled": (boolean, False),
         "FromAddress": (str, True),
         "Identity": (str, True),
+        "OrchestrationSendingRoleArn": (str, False),
         "RoleArn": (str, False),
     }
 
@@ -540,9 +541,11 @@ class GCMChannel(AWSObject):
     resource_type = "AWS::Pinpoint::GCMChannel"
 
     props: PropsDictType = {
-        "ApiKey": (str, True),
+        "ApiKey": (str, False),
         "ApplicationId": (str, True),
+        "DefaultAuthenticationMethod": (str, False),
         "Enabled": (boolean, False),
+        "ServiceJson": (str, False),
     }
 
 

@@ -60,6 +60,18 @@ class ConfigurationProfile(AWSObject):
     }
 
 
+class DynamicExtensionParameters(AWSProperty):
+    """
+    `DynamicExtensionParameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-appconfig-deployment-dynamicextensionparameters.html>`__
+    """
+
+    props: PropsDictType = {
+        "ExtensionReference": (str, False),
+        "ParameterName": (str, False),
+        "ParameterValue": (str, False),
+    }
+
+
 class Deployment(AWSObject):
     """
     `Deployment <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-appconfig-deployment.html>`__
@@ -73,6 +85,7 @@ class Deployment(AWSObject):
         "ConfigurationVersion": (str, True),
         "DeploymentStrategyId": (str, True),
         "Description": (str, False),
+        "DynamicExtensionParameters": ([DynamicExtensionParameters], False),
         "EnvironmentId": (str, True),
         "KmsKeyIdentifier": (str, False),
         "Tags": (Tags, False),
@@ -98,13 +111,13 @@ class DeploymentStrategy(AWSObject):
     }
 
 
-class Monitors(AWSProperty):
+class Monitor(AWSProperty):
     """
-    `Monitors <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-appconfig-environment-monitors.html>`__
+    `Monitor <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-appconfig-environment-monitor.html>`__
     """
 
     props: PropsDictType = {
-        "AlarmArn": (str, False),
+        "AlarmArn": (str, True),
         "AlarmRoleArn": (str, False),
     }
 
@@ -119,7 +132,7 @@ class Environment(AWSObject):
     props: PropsDictType = {
         "ApplicationId": (str, True),
         "Description": (str, False),
-        "Monitors": ([Monitors], False),
+        "Monitors": ([Monitor], False),
         "Name": (str, True),
         "Tags": (Tags, False),
     }
@@ -132,6 +145,7 @@ class Parameter(AWSProperty):
 
     props: PropsDictType = {
         "Description": (str, False),
+        "Dynamic": (boolean, False),
         "Required": (boolean, True),
     }
 
@@ -182,6 +196,6 @@ class HostedConfigurationVersion(AWSObject):
         "Content": (str, True),
         "ContentType": (str, True),
         "Description": (str, False),
-        "LatestVersionNumber": (double, False),
+        "LatestVersionNumber": (integer, False),
         "VersionLabel": (str, False),
     }

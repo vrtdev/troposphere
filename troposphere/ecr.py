@@ -48,7 +48,9 @@ class PullThroughCacheRule(AWSObject):
     resource_type = "AWS::ECR::PullThroughCacheRule"
 
     props: PropsDictType = {
+        "CredentialArn": (str, False),
         "EcrRepositoryPrefix": (str, False),
+        "UpstreamRegistry": (str, False),
         "UpstreamRegistryUrl": (str, False),
     }
 
@@ -122,7 +124,7 @@ class ReplicationConfiguration(AWSObject):
 
 class EncryptionConfiguration(AWSProperty):
     """
-    `EncryptionConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecr-repository-encryptionconfiguration.html>`__
+    `EncryptionConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ecr-repositorycreationtemplate-encryptionconfiguration.html>`__
     """
 
     props: PropsDictType = {
@@ -168,4 +170,23 @@ class Repository(AWSObject):
         "RepositoryName": (str, False),
         "RepositoryPolicyText": (policytypes, False),
         "Tags": (Tags, False),
+    }
+
+
+class RepositoryCreationTemplate(AWSObject):
+    """
+    `RepositoryCreationTemplate <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-ecr-repositorycreationtemplate.html>`__
+    """
+
+    resource_type = "AWS::ECR::RepositoryCreationTemplate"
+
+    props: PropsDictType = {
+        "AppliedFor": ([str], True),
+        "Description": (str, False),
+        "EncryptionConfiguration": (EncryptionConfiguration, False),
+        "ImageTagMutability": (str, False),
+        "LifecyclePolicy": (str, False),
+        "Prefix": (str, True),
+        "RepositoryPolicy": (str, False),
+        "ResourceTags": (Tags, False),
     }

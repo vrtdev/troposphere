@@ -7,7 +7,7 @@
 
 
 from . import AWSObject, AWSProperty, PropsDictType, Tags
-from .validators import boolean, double
+from .validators import boolean, double, integer
 
 
 class AnalysisParameter(AWSProperty):
@@ -63,6 +63,26 @@ class DataEncryptionMetadata(AWSProperty):
     }
 
 
+class QueryComputePaymentConfig(AWSProperty):
+    """
+    `QueryComputePaymentConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-collaboration-querycomputepaymentconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "IsResponsible": (boolean, True),
+    }
+
+
+class PaymentConfiguration(AWSProperty):
+    """
+    `PaymentConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-collaboration-paymentconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "QueryCompute": (QueryComputePaymentConfig, True),
+    }
+
+
 class MemberSpecification(AWSProperty):
     """
     `MemberSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-collaboration-memberspecification.html>`__
@@ -72,6 +92,7 @@ class MemberSpecification(AWSProperty):
         "AccountId": (str, True),
         "DisplayName": (str, True),
         "MemberAbilities": ([str], True),
+        "PaymentConfiguration": (PaymentConfiguration, False),
     }
 
 
@@ -85,6 +106,7 @@ class Collaboration(AWSObject):
     props: PropsDictType = {
         "CreatorDisplayName": (str, True),
         "CreatorMemberAbilities": ([str], True),
+        "CreatorPaymentConfiguration": (PaymentConfiguration, False),
         "DataEncryptionMetadata": (DataEncryptionMetadata, False),
         "Description": (str, True),
         "Members": ([MemberSpecification], True),
@@ -133,6 +155,26 @@ class AnalysisRuleAggregation(AWSProperty):
     }
 
 
+class DifferentialPrivacyColumn(AWSProperty):
+    """
+    `DifferentialPrivacyColumn <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtable-differentialprivacycolumn.html>`__
+    """
+
+    props: PropsDictType = {
+        "Name": (str, True),
+    }
+
+
+class DifferentialPrivacy(AWSProperty):
+    """
+    `DifferentialPrivacy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtable-differentialprivacy.html>`__
+    """
+
+    props: PropsDictType = {
+        "Columns": ([DifferentialPrivacyColumn], True),
+    }
+
+
 class AnalysisRuleCustom(AWSProperty):
     """
     `AnalysisRuleCustom <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtable-analysisrulecustom.html>`__
@@ -141,6 +183,7 @@ class AnalysisRuleCustom(AWSProperty):
     props: PropsDictType = {
         "AllowedAnalyses": ([str], True),
         "AllowedAnalysisProviders": ([str], False),
+        "DifferentialPrivacy": (DifferentialPrivacy, False),
     }
 
 
@@ -245,6 +288,26 @@ class ConfiguredTableAssociation(AWSObject):
     }
 
 
+class MembershipQueryComputePaymentConfig(AWSProperty):
+    """
+    `MembershipQueryComputePaymentConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-membership-membershipquerycomputepaymentconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "IsResponsible": (boolean, True),
+    }
+
+
+class MembershipPaymentConfiguration(AWSProperty):
+    """
+    `MembershipPaymentConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-membership-membershippaymentconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "QueryCompute": (MembershipQueryComputePaymentConfig, True),
+    }
+
+
 class ProtectedQueryS3OutputConfiguration(AWSProperty):
     """
     `ProtectedQueryS3OutputConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-membership-protectedquerys3outputconfiguration.html>`__
@@ -291,7 +354,35 @@ class Membership(AWSObject):
             MembershipProtectedQueryResultConfiguration,
             False,
         ),
+        "PaymentConfiguration": (MembershipPaymentConfiguration, False),
         "QueryLogStatus": (str, True),
+        "Tags": (Tags, False),
+    }
+
+
+class Parameters(AWSProperty):
+    """
+    `Parameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-privacybudgettemplate-parameters.html>`__
+    """
+
+    props: PropsDictType = {
+        "Epsilon": (integer, True),
+        "UsersNoisePerQuery": (integer, True),
+    }
+
+
+class PrivacyBudgetTemplate(AWSObject):
+    """
+    `PrivacyBudgetTemplate <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cleanrooms-privacybudgettemplate.html>`__
+    """
+
+    resource_type = "AWS::CleanRooms::PrivacyBudgetTemplate"
+
+    props: PropsDictType = {
+        "AutoRefresh": (str, True),
+        "MembershipIdentifier": (str, True),
+        "Parameters": (Parameters, True),
+        "PrivacyBudgetType": (str, True),
         "Tags": (Tags, False),
     }
 
