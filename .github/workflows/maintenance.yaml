@@ -1,7 +1,5 @@
 name: Automated Maintenance
 on:
-  schedule:
-    - cron: '0 13 * * *'
   workflow_dispatch: # Enables on-demand/manual triggering
 jobs:
   job:
