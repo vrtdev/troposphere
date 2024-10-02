@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -18,9 +18,10 @@ class Channel(AWSObject):
     resource_type = "AWS::MediaPackageV2::Channel"
 
     props: PropsDictType = {
-        "ChannelGroupName": (str, False),
-        "ChannelName": (str, False),
+        "ChannelGroupName": (str, True),
+        "ChannelName": (str, True),
         "Description": (str, False),
+        "InputType": (str, False),
         "Tags": (Tags, False),
     }
 
@@ -33,7 +34,7 @@ class ChannelGroup(AWSObject):
     resource_type = "AWS::MediaPackageV2::ChannelGroup"
 
     props: PropsDictType = {
-        "ChannelGroupName": (str, False),
+        "ChannelGroupName": (str, True),
         "Description": (str, False),
         "Tags": (Tags, False),
     }
@@ -47,9 +48,73 @@ class ChannelPolicy(AWSObject):
     resource_type = "AWS::MediaPackageV2::ChannelPolicy"
 
     props: PropsDictType = {
-        "ChannelGroupName": (str, False),
-        "ChannelName": (str, False),
+        "ChannelGroupName": (str, True),
+        "ChannelName": (str, True),
         "Policy": (dict, True),
+    }
+
+
+class DashUtcTiming(AWSProperty):
+    """
+    `DashUtcTiming <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-mediapackagev2-originendpoint-dashutctiming.html>`__
+    """
+
+    props: PropsDictType = {
+        "TimingMode": (str, False),
+        "TimingSource": (str, False),
+    }
+
+
+class FilterConfiguration(AWSProperty):
+    """
+    `FilterConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-mediapackagev2-originendpoint-filterconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "End": (str, False),
+        "ManifestFilter": (str, False),
+        "Start": (str, False),
+        "TimeDelaySeconds": (integer, False),
+    }
+
+
+class ScteDash(AWSProperty):
+    """
+    `ScteDash <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-mediapackagev2-originendpoint-sctedash.html>`__
+    """
+
+    props: PropsDictType = {
+        "AdMarkerDash": (str, False),
+    }
+
+
+class DashManifestConfiguration(AWSProperty):
+    """
+    `DashManifestConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-mediapackagev2-originendpoint-dashmanifestconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "DrmSignaling": (str, False),
+        "FilterConfiguration": (FilterConfiguration, False),
+        "ManifestName": (str, True),
+        "ManifestWindowSeconds": (integer, False),
+        "MinBufferTimeSeconds": (integer, False),
+        "MinUpdatePeriodSeconds": (integer, False),
+        "PeriodTriggers": ([str], False),
+        "ScteDash": (ScteDash, False),
+        "SegmentTemplateFormat": (str, False),
+        "SuggestedPresentationDelaySeconds": (integer, False),
+        "UtcTiming": (DashUtcTiming, False),
+    }
+
+
+class ForceEndpointErrorConfiguration(AWSProperty):
+    """
+    `ForceEndpointErrorConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-mediapackagev2-originendpoint-forceendpointerrorconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "EndpointErrorConditions": ([str], False),
     }
 
 
@@ -70,6 +135,7 @@ class HlsManifestConfiguration(AWSProperty):
 
     props: PropsDictType = {
         "ChildManifestName": (str, False),
+        "FilterConfiguration": (FilterConfiguration, False),
         "ManifestName": (str, True),
         "ManifestWindowSeconds": (integer, False),
         "ProgramDateTimeIntervalSeconds": (integer, False),
@@ -85,6 +151,7 @@ class LowLatencyHlsManifestConfiguration(AWSProperty):
 
     props: PropsDictType = {
         "ChildManifestName": (str, False),
+        "FilterConfiguration": (FilterConfiguration, False),
         "ManifestName": (str, True),
         "ManifestWindowSeconds": (integer, False),
         "ProgramDateTimeIntervalSeconds": (integer, False),
@@ -176,13 +243,15 @@ class OriginEndpoint(AWSObject):
     resource_type = "AWS::MediaPackageV2::OriginEndpoint"
 
     props: PropsDictType = {
-        "ChannelGroupName": (str, False),
-        "ChannelName": (str, False),
+        "ChannelGroupName": (str, True),
+        "ChannelName": (str, True),
         "ContainerType": (str, True),
+        "DashManifests": ([DashManifestConfiguration], False),
         "Description": (str, False),
+        "ForceEndpointErrorConfiguration": (ForceEndpointErrorConfiguration, False),
         "HlsManifests": ([HlsManifestConfiguration], False),
         "LowLatencyHlsManifests": ([LowLatencyHlsManifestConfiguration], False),
-        "OriginEndpointName": (str, False),
+        "OriginEndpointName": (str, True),
         "Segment": (Segment, False),
         "StartoverWindowSeconds": (integer, False),
         "Tags": (Tags, False),
@@ -197,9 +266,9 @@ class OriginEndpointPolicy(AWSObject):
     resource_type = "AWS::MediaPackageV2::OriginEndpointPolicy"
 
     props: PropsDictType = {
-        "ChannelGroupName": (str, False),
-        "ChannelName": (str, False),
-        "OriginEndpointName": (str, False),
+        "ChannelGroupName": (str, True),
+        "ChannelName": (str, True),
+        "OriginEndpointName": (str, True),
         "Policy": (dict, True),
     }
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -29,6 +29,17 @@ from .validators.autoscaling import (
     validate_launch_template_specification,
     validate_tags_or_list,
 )
+
+
+class InstanceMaintenancePolicy(AWSProperty):
+    """
+    `InstanceMaintenancePolicy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-autoscaling-autoscalinggroup-instancemaintenancepolicy.html>`__
+    """
+
+    props: PropsDictType = {
+        "MaxHealthyPercentage": (integer, False),
+        "MinHealthyPercentage": (integer, False),
+    }
 
 
 class LaunchTemplateSpecification(AWSProperty):
@@ -207,15 +218,16 @@ class InstanceRequirements(AWSProperty):
         "InstanceGenerations": ([str], False),
         "LocalStorage": (str, False),
         "LocalStorageTypes": ([str], False),
+        "MaxSpotPriceAsPercentageOfOptimalOnDemandPrice": (integer, False),
         "MemoryGiBPerVCpu": (MemoryGiBPerVCpuRequest, False),
-        "MemoryMiB": (MemoryMiBRequest, False),
+        "MemoryMiB": (MemoryMiBRequest, True),
         "NetworkBandwidthGbps": (NetworkBandwidthGbpsRequest, False),
         "NetworkInterfaceCount": (NetworkInterfaceCountRequest, False),
         "OnDemandMaxPricePercentageOverLowestPrice": (integer, False),
         "RequireHibernateSupport": (boolean, False),
         "SpotMaxPricePercentageOverLowestPrice": (integer, False),
         "TotalLocalStorageGB": (TotalLocalStorageGBRequest, False),
-        "VCpuCount": (VCpuCountRequest, False),
+        "VCpuCount": (VCpuCountRequest, True),
     }
 
 
@@ -284,6 +296,7 @@ class AutoScalingGroup(AWSObject):
         "HealthCheckGracePeriod": (integer, False),
         "HealthCheckType": (str, False),
         "InstanceId": (str, False),
+        "InstanceMaintenancePolicy": (InstanceMaintenancePolicy, False),
         "LaunchConfigurationName": (str, False),
         "LaunchTemplate": (LaunchTemplateSpecification, False),
         "LifecycleHookSpecificationList": ([LifecycleHookSpecification], False),
@@ -569,6 +582,32 @@ class StepAdjustments(AWSProperty):
     }
 
 
+class TargetTrackingMetricStat(AWSProperty):
+    """
+    `TargetTrackingMetricStat <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-autoscaling-scalingpolicy-targettrackingmetricstat.html>`__
+    """
+
+    props: PropsDictType = {
+        "Metric": (Metric, True),
+        "Stat": (str, True),
+        "Unit": (str, False),
+    }
+
+
+class TargetTrackingMetricDataQuery(AWSProperty):
+    """
+    `TargetTrackingMetricDataQuery <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-autoscaling-scalingpolicy-targettrackingmetricdataquery.html>`__
+    """
+
+    props: PropsDictType = {
+        "Expression": (str, False),
+        "Id": (str, True),
+        "Label": (str, False),
+        "MetricStat": (TargetTrackingMetricStat, False),
+        "ReturnData": (boolean, False),
+    }
+
+
 class CustomizedMetricSpecification(AWSProperty):
     """
     `CustomizedMetricSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-autoscaling-scalingpolicy-customizedmetricspecification.html>`__
@@ -576,9 +615,10 @@ class CustomizedMetricSpecification(AWSProperty):
 
     props: PropsDictType = {
         "Dimensions": ([MetricDimension], False),
-        "MetricName": (str, True),
-        "Namespace": (str, True),
-        "Statistic": (str, True),
+        "MetricName": (str, False),
+        "Metrics": ([TargetTrackingMetricDataQuery], False),
+        "Namespace": (str, False),
+        "Statistic": (str, False),
         "Unit": (str, False),
     }
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -467,6 +467,26 @@ class ConsumerGroupReplication(AWSProperty):
     }
 
 
+class ReplicationStartingPosition(AWSProperty):
+    """
+    `ReplicationStartingPosition <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-msk-replicator-replicationstartingposition.html>`__
+    """
+
+    props: PropsDictType = {
+        "Type": (str, False),
+    }
+
+
+class ReplicationTopicNameConfiguration(AWSProperty):
+    """
+    `ReplicationTopicNameConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-msk-replicator-replicationtopicnameconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "Type": (str, False),
+    }
+
+
 class TopicReplication(AWSProperty):
     """
     `TopicReplication <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-msk-replicator-topicreplication.html>`__
@@ -476,6 +496,8 @@ class TopicReplication(AWSProperty):
         "CopyAccessControlListsForTopics": (boolean, False),
         "CopyTopicConfigurations": (boolean, False),
         "DetectAndCopyNewTopics": (boolean, False),
+        "StartingPosition": (ReplicationStartingPosition, False),
+        "TopicNameConfiguration": (ReplicationTopicNameConfiguration, False),
         "TopicsToExclude": ([str], False),
         "TopicsToReplicate": ([str], True),
     }

@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -96,7 +96,9 @@ class Portal(AWSObject):
         "BrowserSettingsArn": (str, False),
         "CustomerManagedKey": (str, False),
         "DisplayName": (str, False),
+        "InstanceType": (str, False),
         "IpAccessSettingsArn": (str, False),
+        "MaxConcurrentSessions": (double, False),
         "NetworkSettingsArn": (str, False),
         "Tags": (Tags, False),
         "TrustStoreArn": (str, False),
@@ -169,6 +171,7 @@ class UserSettings(AWSObject):
         ),
         "CopyAllowed": (str, True),
         "CustomerManagedKey": (str, False),
+        "DeepLinkAllowed": (str, False),
         "DisconnectTimeoutInMinutes": (double, False),
         "DownloadAllowed": (str, True),
         "IdleDisconnectTimeoutInMinutes": (double, False),

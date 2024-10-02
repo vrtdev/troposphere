@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -257,6 +257,7 @@ class Resource(AWSObject):
     resource_type = "AWS::LakeFormation::Resource"
 
     props: PropsDictType = {
+        "HybridAccessEnabled": (boolean, False),
         "ResourceArn": (str, True),
         "RoleArn": (str, False),
         "UseServiceLinkedRole": (boolean, True),

@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -9,6 +9,16 @@
 from . import AWSObject, AWSProperty, PropsDictType
 
 
+class CognitoGroupConfiguration(AWSProperty):
+    """
+    `CognitoGroupConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-verifiedpermissions-identitysource-cognitogroupconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "GroupEntityType": (str, True),
+    }
+
+
 class CognitoUserPoolConfiguration(AWSProperty):
     """
     `CognitoUserPoolConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-verifiedpermissions-identitysource-cognitouserpoolconfiguration.html>`__
@@ -16,7 +26,65 @@ class CognitoUserPoolConfiguration(AWSProperty):
 
     props: PropsDictType = {
         "ClientIds": ([str], False),
+        "GroupConfiguration": (CognitoGroupConfiguration, False),
         "UserPoolArn": (str, True),
+    }
+
+
+class OpenIdConnectGroupConfiguration(AWSProperty):
+    """
+    `OpenIdConnectGroupConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-verifiedpermissions-identitysource-openidconnectgroupconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "GroupClaim": (str, True),
+        "GroupEntityType": (str, True),
+    }
+
+
+class OpenIdConnectAccessTokenConfiguration(AWSProperty):
+    """
+    `OpenIdConnectAccessTokenConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-verifiedpermissions-identitysource-openidconnectaccesstokenconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "Audiences": ([str], False),
+        "PrincipalIdClaim": (str, False),
+    }
+
+
+class OpenIdConnectIdentityTokenConfiguration(AWSProperty):
+    """
+    `OpenIdConnectIdentityTokenConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-verifiedpermissions-identitysource-openidconnectidentitytokenconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "ClientIds": ([str], False),
+        "PrincipalIdClaim": (str, False),
+    }
+
+
+class OpenIdConnectTokenSelection(AWSProperty):
+    """
+    `OpenIdConnectTokenSelection <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-verifiedpermissions-identitysource-openidconnecttokenselection.html>`__
+    """
+
+    props: PropsDictType = {
+        "AccessTokenOnly": (OpenIdConnectAccessTokenConfiguration, False),
+        "IdentityTokenOnly": (OpenIdConnectIdentityTokenConfiguration, False),
+    }
+
+
+class OpenIdConnectConfiguration(AWSProperty):
+    """
+    `OpenIdConnectConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-verifiedpermissions-identitysource-openidconnectconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "EntityIdPrefix": (str, False),
+        "GroupConfiguration": (OpenIdConnectGroupConfiguration, False),
+        "Issuer": (str, True),
+        "TokenSelection": (OpenIdConnectTokenSelection, True),
     }
 
 
@@ -26,7 +94,8 @@ class IdentitySourceConfiguration(AWSProperty):
     """
 
     props: PropsDictType = {
-        "CognitoUserPoolConfiguration": (CognitoUserPoolConfiguration, True),
+        "CognitoUserPoolConfiguration": (CognitoUserPoolConfiguration, False),
+        "OpenIdConnectConfiguration": (OpenIdConnectConfiguration, False),
     }
 
 
@@ -39,7 +108,7 @@ class IdentitySource(AWSObject):
 
     props: PropsDictType = {
         "Configuration": (IdentitySourceConfiguration, True),
-        "PolicyStoreId": (str, False),
+        "PolicyStoreId": (str, True),
         "PrincipalEntityType": (str, False),
     }
 
@@ -98,7 +167,7 @@ class Policy(AWSObject):
 
     props: PropsDictType = {
         "Definition": (PolicyDefinition, True),
-        "PolicyStoreId": (str, False),
+        "PolicyStoreId": (str, True),
     }
 
 
@@ -130,6 +199,7 @@ class PolicyStore(AWSObject):
     resource_type = "AWS::VerifiedPermissions::PolicyStore"
 
     props: PropsDictType = {
+        "Description": (str, False),
         "Schema": (SchemaDefinition, False),
         "ValidationSettings": (ValidationSettings, True),
     }
@@ -144,19 +214,6 @@ class PolicyTemplate(AWSObject):
 
     props: PropsDictType = {
         "Description": (str, False),
-        "PolicyStoreId": (str, False),
+        "PolicyStoreId": (str, True),
         "Statement": (str, True),
-    }
-
-
-class IdentitySourceDetails(AWSProperty):
-    """
-    `IdentitySourceDetails <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-verifiedpermissions-identitysource-identitysourcedetails.html>`__
-    """
-
-    props: PropsDictType = {
-        "ClientIds": ([str], False),
-        "DiscoveryUrl": (str, False),
-        "OpenIdIssuer": (str, False),
-        "UserPoolArn": (str, False),
     }

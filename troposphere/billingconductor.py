@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -113,6 +113,7 @@ class CustomLineItem(AWSObject):
     resource_type = "AWS::BillingConductor::CustomLineItem"
 
     props: PropsDictType = {
+        "AccountId": (str, False),
         "BillingGroupArn": (str, True),
         "BillingPeriodRange": (BillingPeriodRange, False),
         "CustomLineItemChargeDetails": (CustomLineItemChargeDetails, False),

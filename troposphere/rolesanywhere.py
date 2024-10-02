@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -26,6 +26,27 @@ class CRL(AWSObject):
     }
 
 
+class MappingRule(AWSProperty):
+    """
+    `MappingRule <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-rolesanywhere-profile-mappingrule.html>`__
+    """
+
+    props: PropsDictType = {
+        "Specifier": (str, True),
+    }
+
+
+class AttributeMapping(AWSProperty):
+    """
+    `AttributeMapping <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-rolesanywhere-profile-attributemapping.html>`__
+    """
+
+    props: PropsDictType = {
+        "CertificateField": (str, True),
+        "MappingRules": ([MappingRule], True),
+    }
+
+
 class Profile(AWSObject):
     """
     `Profile <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-rolesanywhere-profile.html>`__
@@ -34,6 +55,8 @@ class Profile(AWSObject):
     resource_type = "AWS::RolesAnywhere::Profile"
 
     props: PropsDictType = {
+        "AcceptRoleSessionName": (boolean, False),
+        "AttributeMappings": ([AttributeMapping], False),
         "DurationSeconds": (double, False),
         "Enabled": (boolean, False),
         "ManagedPolicyArns": ([str], False),

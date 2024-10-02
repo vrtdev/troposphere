@@ -1,3 +1,124 @@
+4.8.2 (2024*09*30)
+-------------------------------
+* Update SSM OperatingSystem validator (#2256)
+* Updates from spec version 180.0.0 (updated)
+* Updates from spec version 182.0.0 (#2257)
+* The APIGateway Integration timeout can now be increased beyond 29,000 milliseconds. Removing upper limit. (#2258)
+* Convert to using pytest instead of "setup.py test"
+* Updates from spec version 183.0.0 (#2259)
+* Allow TZ as a lambda env var
+* Updates from spec version 184.0.0 (#2263)
+* Update ElastiCache instance types (#2262)
+* Fix Chatbot::SlackChannelConfiguration LoggingLevel validation (Fixes #2264)
+* Update node from 17 to 22 for test action
+* Updates from spec version 185.0.0 (#2267)
+* Update kinesisanalyticsv2 VALID_RUNTIME_ENVIRONMENTS (#2266)
+* Updates from spec version 185.0.1 (#2269)
+* Validate the type for Tags (#2270)
+* Add new AWS resources
+
+4.8.1 (2024*06*28)
+-------------------------------
+* Update copyright year in generated files
+* Update black and isort
+* Updates from spec version 172.0.0 (#2241)
+* Updates from spec version 173.0.0 (#2242)
+* Updates from spec version 174.0.0 (#2243)
+* Updates from spec version 175.0.0 (#2244)
+* Add support for GitLab sources in CodeBuild projects (#2246)
+* Add SnapStart to Serverless Function (#2248)
+* Add setuptools as a dev requirement
+* Updates from spec version 176.0.0 (#2249)
+* Update glue ConnectionType validatorto allow SNOWFLAKE (#2247)
+* Updates from spec version 177.0.0 (#2250)
+* Updates from spec version 178.0.0 (#2251)
+* Add LoggingConfig to Serverless::Function (#2253)
+* Updates from spec version 179.0.0 (#2254)
+* Updates from spec version 180.0.0 (#2255)
+
+4.8.0 (2024*04*29)
+-------------------------------
+* Updates from spec version 165.0.0 (#2230)
+* Updates from spec version 166.0.0
+* Updates from spec version 167.0.0
+* Updates from spec version 167.1.0
+* Add syn-nodejs-puppeteer-7.0 as valid Synthetics::Canary runtime (#2234)
+* DLM::LifecyclePolicy CreateRule.Interval: allow 1 as a valid interval (#2238)
+* Add FilterCriteria to Serverless KinesisEvent (#2235)
+* Fix Serverless MQEvent SourceAccessConfigurations property type (#2236)
+* Updates from spec version 168.0.0
+* Updates from spec version 169.0.0
+* Updates from spec version 170.0.0
+* Updates from spec version 171.0.0 (#2240)
+* Update copyright year for generated files
+* Add new AWS resources
+
+4.7.0 (2024*03*10)
+-------------------------------
+* Breaking change: AppConfig::Environment.Monitors was renamed to AppConfig::Environment.Monitor
+* Validate CoreNetworkArn for a valid EC2 Route descriptor
+* Fix RDS validator for gp3 iops/allocated_storage ratio check (#2225)
+* Fix lint issue in recent change to test_rds.py
+* Updates from spec version 158.0.0
+* Updates from spec version 159.0.0
+* Updates from spec version 160.0.0 (#2226)
+* Add syn-nodejs-puppeteer-6.2 as valid canary runtime (#2228)
+* Updates from spec version 161.0.0
+* Updates from spec version 162.0.0
+* Update actions for node 16 => 20
+* Update to peter-evans/create-pull-request@v6
+* Updates from spec version 163.0.0 (#2227)
+* Updates from spec version 164.0.0 (#2229)
+* Add AWS:B2BI
+* Add AWS::DataZone
+* Add AWS::NeptuneGraph
+* Add new AWS services to resource doc
+
+4.6.0 (2024*01*06)
+-------------------------------
+* Emit pyright version on maintenance run
+* Use package.json to install the correct version of pyright
+* Updates from spec version 150.0.0 (#2210)
+* Add AWS::WorkSpacesThinClient
+* Updates from spec version 150.0.0 (#2211)
+* Updates from spec version 151.0.0 (#2212)
+* Updates from spec version 152.0.0
+* Update docs dependency
+* Updates from spec version 153.0.0 (#2214)
+* Allow EVENT for Glue::Trigger.Type (Fixes #2215)
+* Update readthedocs-sphinx-search to 0.3.2
+* Updates from spec version 154.0.0 (#2218)
+* Fix Batch patches for spec version 155.0.0
+* Updates from spec version 155.0.0
+* Add port validator for ElastiCache::ServerlessCache.Endpoint
+* Keep Tags consistent for GuardDuty::Filter
+* Updates from spec version 156.0.0 (#2219)
+* Invert Ipv6CidrBlock Check (#2216)
+* Fix valid Synthetics canary runtime versions (#2221)
+* Updates from spec version 157.0.0 (#2222)
+
+4.5.3 (2023*12*06)
+-------------------------------
+* Upgrade readthedocs config to v2
+* Add tests and lint runs for maintenance action
+* Install correct version of pyright for maintenance action
+* Rename due to conflict: S3::StorageLensGroup.StorageLensFilter
+* Add required Name to GuardDuty.IPSet tests
+* Updates from spec version 149.0.0 (#2207)
+* Add AWS::ARCZonalShift
+* Add AWS::S3Express
+* Add new supported resources to docs
+* Prefer ECS::Service.LoadBalancer (Fixes #2206)
+
+4.5.2 (2023*11*11)
+-------------------------------
+* Updates from spec version 146.0.0 (#2201)
+* Updates from spec version 148.0.0 (#2202)
+* Remove EMRserverless "Configurations" due to recursive reference to ConfigurationObject
+* Move __hash__ to BaseAWSObject to support objects in dictionaries (Fixes #2204)
+* Add missing patch related to EMRserverless Configurations removal
+* Remove Tags from EventBridge.Rule (Fixes #2203)
+
 4.5.1 (2023*10*26)
 -------------------------------
 * Fix __eq__ protocol (#2197)

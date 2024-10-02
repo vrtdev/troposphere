@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -32,6 +32,7 @@ class Application(AWSObject):
         "ApplicationId": (str, True),
         "ApplicationType": (str, True),
         "Credentials": ([Credential], False),
+        "DatabaseArn": (str, False),
         "Instances": ([str], False),
         "SapInstanceNumber": (str, False),
         "Sid": (str, False),

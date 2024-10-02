@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -53,6 +53,16 @@ class AutoBranchCreationConfig(AWSProperty):
     }
 
 
+class CacheConfig(AWSProperty):
+    """
+    `CacheConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-amplify-app-cacheconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "Type": (str, False),
+    }
+
+
 class CustomRule(AWSProperty):
     """
     `CustomRule <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-amplify-app-customrule.html>`__
@@ -78,6 +88,7 @@ class App(AWSObject):
         "AutoBranchCreationConfig": (AutoBranchCreationConfig, False),
         "BasicAuthConfig": (BasicAuthConfig, False),
         "BuildSpec": (str, False),
+        "CacheConfig": (CacheConfig, False),
         "CustomHeaders": (str, False),
         "CustomRules": ([CustomRule], False),
         "Description": (str, False),
@@ -127,6 +138,17 @@ class Branch(AWSObject):
     }
 
 
+class CertificateSettings(AWSProperty):
+    """
+    `CertificateSettings <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-amplify-domain-certificatesettings.html>`__
+    """
+
+    props: PropsDictType = {
+        "CertificateType": (str, False),
+        "CustomCertificateArn": (str, False),
+    }
+
+
 class SubDomainSetting(AWSProperty):
     """
     `SubDomainSetting <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-amplify-domain-subdomainsetting.html>`__
@@ -149,7 +171,20 @@ class Domain(AWSObject):
         "AppId": (str, True),
         "AutoSubDomainCreationPatterns": ([str], False),
         "AutoSubDomainIAMRole": (str, False),
+        "CertificateSettings": (CertificateSettings, False),
         "DomainName": (str, True),
         "EnableAutoSubDomain": (boolean, False),
         "SubDomainSettings": ([SubDomainSetting], True),
+    }
+
+
+class Certificate(AWSProperty):
+    """
+    `Certificate <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-amplify-domain-certificate.html>`__
+    """
+
+    props: PropsDictType = {
+        "CertificateArn": (str, False),
+        "CertificateType": (str, False),
+        "CertificateVerificationDNSRecord": (str, False),
     }

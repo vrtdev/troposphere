@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -94,6 +94,19 @@ class FailurePolicy(AWSProperty):
     props: PropsDictType = {
         "RpoInSecs": (integer, True),
         "RtoInSecs": (integer, True),
+    }
+
+
+class PolicyMap(AWSProperty):
+    """
+    `PolicyMap <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-resiliencehub-resiliencypolicy-policymap.html>`__
+    """
+
+    props: PropsDictType = {
+        "AZ": (FailurePolicy, True),
+        "Hardware": (FailurePolicy, True),
+        "Region": (FailurePolicy, False),
+        "Software": (FailurePolicy, True),
     }
 
 

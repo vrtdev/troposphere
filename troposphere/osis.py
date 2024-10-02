@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -10,13 +10,33 @@ from . import AWSObject, AWSProperty, PropsDictType, Tags
 from .validators import boolean, integer
 
 
+class BufferOptions(AWSProperty):
+    """
+    `BufferOptions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-osis-pipeline-bufferoptions.html>`__
+    """
+
+    props: PropsDictType = {
+        "PersistentBufferEnabled": (boolean, True),
+    }
+
+
+class EncryptionAtRestOptions(AWSProperty):
+    """
+    `EncryptionAtRestOptions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-osis-pipeline-encryptionatrestoptions.html>`__
+    """
+
+    props: PropsDictType = {
+        "KmsKeyArn": (str, True),
+    }
+
+
 class CloudWatchLogDestination(AWSProperty):
     """
     `CloudWatchLogDestination <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-osis-pipeline-cloudwatchlogdestination.html>`__
     """
 
     props: PropsDictType = {
-        "LogGroup": (str, False),
+        "LogGroup": (str, True),
     }
 
 
@@ -31,6 +51,17 @@ class LogPublishingOptions(AWSProperty):
     }
 
 
+class VpcAttachmentOptions(AWSProperty):
+    """
+    `VpcAttachmentOptions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-osis-pipeline-vpcattachmentoptions.html>`__
+    """
+
+    props: PropsDictType = {
+        "AttachToVpc": (boolean, True),
+        "CidrBlock": (str, True),
+    }
+
+
 class VpcOptions(AWSProperty):
     """
     `VpcOptions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-osis-pipeline-vpcoptions.html>`__
@@ -38,7 +69,9 @@ class VpcOptions(AWSProperty):
 
     props: PropsDictType = {
         "SecurityGroupIds": ([str], False),
-        "SubnetIds": ([str], False),
+        "SubnetIds": ([str], True),
+        "VpcAttachmentOptions": (VpcAttachmentOptions, False),
+        "VpcEndpointManagement": (str, False),
     }
 
 
@@ -50,6 +83,8 @@ class Pipeline(AWSObject):
     resource_type = "AWS::OSIS::Pipeline"
 
     props: PropsDictType = {
+        "BufferOptions": (BufferOptions, False),
+        "EncryptionAtRestOptions": (EncryptionAtRestOptions, False),
         "LogPublishingOptions": (LogPublishingOptions, False),
         "MaxUnits": (integer, True),
         "MinUnits": (integer, True),

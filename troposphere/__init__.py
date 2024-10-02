@@ -41,7 +41,7 @@ if TYPE_CHECKING:
     else:
         from typing import Final
 
-__version__ = "4.5.1"
+__version__ = "4.8.2"
 
 # constants for DeletionPolicy and UpdateReplacePolicy
 Delete: Final = "Delete"
@@ -83,18 +83,15 @@ def is_aws_object_subclass(cls: Any) -> bool:
 @overload
 def encode_to_dict(
     obj: Union[Dict[str, Any], JSONreprProtocol, ToDictProtocol]
-) -> Dict[str, Any]:
-    ...
+) -> Dict[str, Any]: ...
 
 
 @overload
-def encode_to_dict(obj: Union[List[Any], Tuple[Any]]) -> List[Dict[str, Any]]:
-    ...
+def encode_to_dict(obj: Union[List[Any], Tuple[Any]]) -> List[Dict[str, Any]]: ...
 
 
 @overload
-def encode_to_dict(obj: Optional[str]) -> Optional[str]:
-    ...
+def encode_to_dict(obj: Optional[str]) -> Optional[str]: ...
 
 
 def encode_to_dict(
@@ -255,9 +252,11 @@ class BaseAWSObject:
             expected_type = self.props[name][0]
 
             # If the value is a AWSHelperFn we can't do much validation
-            # we'll have to leave that to Amazon.  Maybe there's another way
+            # we'll have to leave that to Amazon. Maybe there's another way
             # to deal with this that we'll come up with eventually
-            if isinstance(value, AWSHelperFn):
+            #
+            # Don't do this for Tags since we can validate the assigned type below
+            if isinstance(value, AWSHelperFn) and name != "Tags":
                 return self.properties.__setitem__(name, value)
 
             # If it's a function, call it...
@@ -430,6 +429,9 @@ class BaseAWSObject:
 
     def __ne__(self, other: object) -> bool:
         return not self == other
+
+    def __hash__(self) -> int:
+        return hash(json.dumps({"title": self.title, **self.to_dict()}, indent=0))
 
 
 class AWSObject(BaseAWSObject):
@@ -1115,6 +1117,3 @@ class Parameter(AWSDeclaration):
                         "%s can only be used with parameters of "
                         "the CommaDelimitedList type." % p
                     )
-
-    def __hash__(self) -> int:
-        return hash(json.dumps({"title": self.title, **self.to_dict()}, indent=0))

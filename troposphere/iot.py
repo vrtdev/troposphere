@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -188,6 +188,21 @@ class Certificate(AWSObject):
     }
 
 
+class CertificateProvider(AWSObject):
+    """
+    `CertificateProvider <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iot-certificateprovider.html>`__
+    """
+
+    resource_type = "AWS::IoT::CertificateProvider"
+
+    props: PropsDictType = {
+        "AccountDefaultForOperations": ([str], True),
+        "CertificateProviderName": (str, False),
+        "LambdaFunctionArn": (str, True),
+        "Tags": (Tags, False),
+    }
+
+
 class CustomMetric(AWSObject):
     """
     `CustomMetric <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-iot-custommetric.html>`__
@@ -229,6 +244,16 @@ class AuthorizerConfig(AWSProperty):
     }
 
 
+class ServerCertificateConfig(AWSProperty):
+    """
+    `ServerCertificateConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-iot-domainconfiguration-servercertificateconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "EnableOCSPCheck": (boolean, False),
+    }
+
+
 class TlsConfig(AWSProperty):
     """
     `TlsConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-iot-domainconfiguration-tlsconfig.html>`__
@@ -252,6 +277,7 @@ class DomainConfiguration(AWSObject):
         "DomainConfigurationStatus": (str, False),
         "DomainName": (str, False),
         "ServerCertificateArns": ([str], False),
+        "ServerCertificateConfig": (ServerCertificateConfig, False),
         "ServiceType": (str, False),
         "Tags": (Tags, False),
         "TlsConfig": (TlsConfig, False),
@@ -714,6 +740,7 @@ class Behavior(AWSProperty):
 
     props: PropsDictType = {
         "Criteria": (BehaviorCriteria, False),
+        "ExportMetric": (boolean, False),
         "Metric": (str, False),
         "MetricDimension": (MetricDimension, False),
         "Name": (str, True),
@@ -727,8 +754,20 @@ class MetricToRetain(AWSProperty):
     """
 
     props: PropsDictType = {
+        "ExportMetric": (boolean, False),
         "Metric": (str, True),
         "MetricDimension": (MetricDimension, False),
+    }
+
+
+class MetricsExportConfig(AWSProperty):
+    """
+    `MetricsExportConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-iot-securityprofile-metricsexportconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "MqttTopic": (str, True),
+        "RoleArn": (str, True),
     }
 
 
@@ -743,6 +782,7 @@ class SecurityProfile(AWSObject):
         "AdditionalMetricsToRetainV2": ([MetricToRetain], False),
         "AlertTargets": (dict, False),
         "Behaviors": ([Behavior], False),
+        "MetricsExportConfig": (MetricsExportConfig, False),
         "SecurityProfileDescription": (str, False),
         "SecurityProfileName": (str, False),
         "Tags": (Tags, False),

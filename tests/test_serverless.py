@@ -1,6 +1,6 @@
 import unittest
 
-from troposphere import ImportValue, Parameter, Ref, Sub, Tags, Template
+from troposphere import ImportValue, Parameter, Ref, Sub, Template
 from troposphere.s3 import Filter, Rules, S3Key
 from troposphere.serverless import (
     SERVERLESS_TRANSFORM,
@@ -70,7 +70,7 @@ class TestServerless(unittest.TestCase):
             Handler="index.handler",
             Runtime="nodejs",
             CodeUri="s3://bucket/handler.zip",
-            Tags=Tags({"Tag1": "TagValue1", "Tag2": "TagValue2"}),
+            Tags={"Tag1": "TagValue1", "Tag2": "TagValue2"},
         )
         t = Template()
         t.add_resource(serverless_func)
@@ -477,17 +477,6 @@ class TestServerless(unittest.TestCase):
             FunctionGlobals(MemorySize=64)
 
     def test_api_event_auth(self):
-        # Verify deprecated Auth
-        api_event = ApiEvent(
-            "SomeApiEvent",
-            Auth=Auth(),
-            Path="some path",
-            Method="some method",
-        )
-        t = Template()
-        t.add_resource(api_event)
-        t.to_json()
-
         # Verify ApiFunctionAuth
         api_event = ApiEvent(
             "SomeApiEvent",

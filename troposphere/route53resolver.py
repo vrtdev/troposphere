@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -38,7 +38,9 @@ class FirewallRule(AWSProperty):
         "BlockOverrideTtl": (integer, False),
         "BlockResponse": (str, False),
         "FirewallDomainListId": (str, True),
+        "FirewallDomainRedirectionAction": (str, False),
         "Priority": (integer, True),
+        "Qtype": (str, False),
     }
 
 
@@ -139,6 +141,7 @@ class ResolverEndpoint(AWSObject):
         "Name": (str, False),
         "OutpostArn": (str, False),
         "PreferredInstanceType": (str, False),
+        "Protocols": ([str], False),
         "ResolverEndpointType": (str, False),
         "SecurityGroupIds": ([str], True),
         "Tags": (Tags, False),
@@ -180,6 +183,7 @@ class TargetAddress(AWSProperty):
         "Ip": (str, False),
         "Ipv6": (str, False),
         "Port": (str, False),
+        "Protocol": (str, False),
     }
 
 
@@ -191,7 +195,8 @@ class ResolverRule(AWSObject):
     resource_type = "AWS::Route53Resolver::ResolverRule"
 
     props: PropsDictType = {
-        "DomainName": (str, True),
+        "DelegationRecord": (str, False),
+        "DomainName": (str, False),
         "Name": (str, False),
         "ResolverEndpointId": (str, False),
         "RuleType": (validate_ruletype, True),

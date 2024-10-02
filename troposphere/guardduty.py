@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -100,7 +100,7 @@ class CFNFeatureConfiguration(AWSProperty):
 
 class TagItem(AWSProperty):
     """
-    `TagItem <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-guardduty-detector-tagitem.html>`__
+    `TagItem <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-guardduty-threatintelset-tagitem.html>`__
     """
 
     props: PropsDictType = {
@@ -153,7 +153,6 @@ class FindingCriteria(AWSProperty):
 
     props: PropsDictType = {
         "Criterion": (dict, False),
-        "ItemType": (Condition, False),
     }
 
 
@@ -165,12 +164,12 @@ class Filter(AWSObject):
     resource_type = "AWS::GuardDuty::Filter"
 
     props: PropsDictType = {
-        "Action": (str, True),
-        "Description": (str, True),
+        "Action": (str, False),
+        "Description": (str, False),
         "DetectorId": (str, True),
         "FindingCriteria": (FindingCriteria, True),
         "Name": (str, True),
-        "Rank": (integer, True),
+        "Rank": (integer, False),
         "Tags": (Tags, False),
     }
 
@@ -183,12 +182,68 @@ class IPSet(AWSObject):
     resource_type = "AWS::GuardDuty::IPSet"
 
     props: PropsDictType = {
-        "Activate": (boolean, True),
-        "DetectorId": (str, True),
+        "Activate": (boolean, False),
+        "DetectorId": (str, False),
         "Format": (str, True),
         "Location": (str, True),
         "Name": (str, False),
-        "Tags": (Tags, False),
+        "Tags": ([TagItem], False),
+    }
+
+
+class CFNTagging(AWSProperty):
+    """
+    `CFNTagging <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-guardduty-malwareprotectionplan-cfntagging.html>`__
+    """
+
+    props: PropsDictType = {
+        "Status": (str, False),
+    }
+
+
+class CFNActions(AWSProperty):
+    """
+    `CFNActions <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-guardduty-malwareprotectionplan-cfnactions.html>`__
+    """
+
+    props: PropsDictType = {
+        "Tagging": (CFNTagging, False),
+    }
+
+
+class S3Bucket(AWSProperty):
+    """
+    `S3Bucket <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-guardduty-malwareprotectionplan-s3bucket.html>`__
+    """
+
+    props: PropsDictType = {
+        "BucketName": (str, False),
+        "ObjectPrefixes": ([str], False),
+    }
+
+
+class CFNProtectedResource(AWSProperty):
+    """
+    `CFNProtectedResource <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-guardduty-malwareprotectionplan-cfnprotectedresource.html>`__
+    """
+
+    props: PropsDictType = {
+        "S3Bucket": (S3Bucket, True),
+    }
+
+
+class MalwareProtectionPlan(AWSObject):
+    """
+    `MalwareProtectionPlan <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-guardduty-malwareprotectionplan.html>`__
+    """
+
+    resource_type = "AWS::GuardDuty::MalwareProtectionPlan"
+
+    props: PropsDictType = {
+        "Actions": (CFNActions, False),
+        "ProtectedResource": (CFNProtectedResource, True),
+        "Role": (str, True),
+        "Tags": ([TagItem], False),
     }
 
 
@@ -214,10 +269,10 @@ class Member(AWSObject):
     resource_type = "AWS::GuardDuty::Member"
 
     props: PropsDictType = {
-        "DetectorId": (str, True),
+        "DetectorId": (str, False),
         "DisableEmailNotification": (boolean, False),
         "Email": (str, True),
-        "MemberId": (str, True),
+        "MemberId": (str, False),
         "Message": (str, False),
         "Status": (str, False),
     }
@@ -231,10 +286,21 @@ class ThreatIntelSet(AWSObject):
     resource_type = "AWS::GuardDuty::ThreatIntelSet"
 
     props: PropsDictType = {
-        "Activate": (boolean, True),
-        "DetectorId": (str, True),
+        "Activate": (boolean, False),
+        "DetectorId": (str, False),
         "Format": (str, True),
         "Location": (str, True),
         "Name": (str, False),
-        "Tags": (Tags, False),
+        "Tags": ([TagItem], False),
+    }
+
+
+class CFNStatusReasons(AWSProperty):
+    """
+    `CFNStatusReasons <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-guardduty-malwareprotectionplan-cfnstatusreasons.html>`__
+    """
+
+    props: PropsDictType = {
+        "Code": (str, False),
+        "Message": (str, False),
     }

@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -7,7 +7,7 @@
 
 
 from . import AWSObject, AWSProperty, PropsDictType, Tags
-from .validators import boolean, double
+from .validators import boolean, double, integer
 
 
 class AnalysisParameter(AWSProperty):
@@ -63,6 +63,26 @@ class DataEncryptionMetadata(AWSProperty):
     }
 
 
+class QueryComputePaymentConfig(AWSProperty):
+    """
+    `QueryComputePaymentConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-collaboration-querycomputepaymentconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "IsResponsible": (boolean, True),
+    }
+
+
+class PaymentConfiguration(AWSProperty):
+    """
+    `PaymentConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-collaboration-paymentconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "QueryCompute": (QueryComputePaymentConfig, True),
+    }
+
+
 class MemberSpecification(AWSProperty):
     """
     `MemberSpecification <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-collaboration-memberspecification.html>`__
@@ -72,6 +92,7 @@ class MemberSpecification(AWSProperty):
         "AccountId": (str, True),
         "DisplayName": (str, True),
         "MemberAbilities": ([str], True),
+        "PaymentConfiguration": (PaymentConfiguration, False),
     }
 
 
@@ -85,6 +106,7 @@ class Collaboration(AWSObject):
     props: PropsDictType = {
         "CreatorDisplayName": (str, True),
         "CreatorMemberAbilities": ([str], True),
+        "CreatorPaymentConfiguration": (PaymentConfiguration, False),
         "DataEncryptionMetadata": (DataEncryptionMetadata, False),
         "Description": (str, True),
         "Members": ([MemberSpecification], True),
@@ -123,6 +145,7 @@ class AnalysisRuleAggregation(AWSProperty):
     """
 
     props: PropsDictType = {
+        "AdditionalAnalyses": (str, False),
         "AggregateColumns": ([AggregateColumn], True),
         "AllowedJoinOperators": ([str], False),
         "DimensionColumns": ([str], True),
@@ -133,14 +156,37 @@ class AnalysisRuleAggregation(AWSProperty):
     }
 
 
+class DifferentialPrivacyColumn(AWSProperty):
+    """
+    `DifferentialPrivacyColumn <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtable-differentialprivacycolumn.html>`__
+    """
+
+    props: PropsDictType = {
+        "Name": (str, True),
+    }
+
+
+class DifferentialPrivacy(AWSProperty):
+    """
+    `DifferentialPrivacy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtable-differentialprivacy.html>`__
+    """
+
+    props: PropsDictType = {
+        "Columns": ([DifferentialPrivacyColumn], True),
+    }
+
+
 class AnalysisRuleCustom(AWSProperty):
     """
     `AnalysisRuleCustom <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtable-analysisrulecustom.html>`__
     """
 
     props: PropsDictType = {
+        "AdditionalAnalyses": (str, False),
         "AllowedAnalyses": ([str], True),
         "AllowedAnalysisProviders": ([str], False),
+        "DifferentialPrivacy": (DifferentialPrivacy, False),
+        "DisallowedOutputColumns": ([str], False),
     }
 
 
@@ -150,6 +196,7 @@ class AnalysisRuleList(AWSProperty):
     """
 
     props: PropsDictType = {
+        "AdditionalAnalyses": (str, False),
         "AllowedJoinOperators": ([str], False),
         "JoinColumns": ([str], True),
         "ListColumns": ([str], True),
@@ -228,6 +275,72 @@ class ConfiguredTable(AWSObject):
     }
 
 
+class ConfiguredTableAssociationAnalysisRuleAggregation(AWSProperty):
+    """
+    `ConfiguredTableAssociationAnalysisRuleAggregation <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtableassociation-configuredtableassociationanalysisruleaggregation.html>`__
+    """
+
+    props: PropsDictType = {
+        "AllowedAdditionalAnalyses": ([str], False),
+        "AllowedResultReceivers": ([str], False),
+    }
+
+
+class ConfiguredTableAssociationAnalysisRuleCustom(AWSProperty):
+    """
+    `ConfiguredTableAssociationAnalysisRuleCustom <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtableassociation-configuredtableassociationanalysisrulecustom.html>`__
+    """
+
+    props: PropsDictType = {
+        "AllowedAdditionalAnalyses": ([str], False),
+        "AllowedResultReceivers": ([str], False),
+    }
+
+
+class ConfiguredTableAssociationAnalysisRuleList(AWSProperty):
+    """
+    `ConfiguredTableAssociationAnalysisRuleList <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtableassociation-configuredtableassociationanalysisrulelist.html>`__
+    """
+
+    props: PropsDictType = {
+        "AllowedAdditionalAnalyses": ([str], False),
+        "AllowedResultReceivers": ([str], False),
+    }
+
+
+class ConfiguredTableAssociationAnalysisRulePolicyV1(AWSProperty):
+    """
+    `ConfiguredTableAssociationAnalysisRulePolicyV1 <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtableassociation-configuredtableassociationanalysisrulepolicyv1.html>`__
+    """
+
+    props: PropsDictType = {
+        "Aggregation": (ConfiguredTableAssociationAnalysisRuleAggregation, False),
+        "Custom": (ConfiguredTableAssociationAnalysisRuleCustom, False),
+        "List": (ConfiguredTableAssociationAnalysisRuleList, False),
+    }
+
+
+class ConfiguredTableAssociationAnalysisRulePolicy(AWSProperty):
+    """
+    `ConfiguredTableAssociationAnalysisRulePolicy <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtableassociation-configuredtableassociationanalysisrulepolicy.html>`__
+    """
+
+    props: PropsDictType = {
+        "V1": (ConfiguredTableAssociationAnalysisRulePolicyV1, True),
+    }
+
+
+class ConfiguredTableAssociationAnalysisRule(AWSProperty):
+    """
+    `ConfiguredTableAssociationAnalysisRule <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-configuredtableassociation-configuredtableassociationanalysisrule.html>`__
+    """
+
+    props: PropsDictType = {
+        "Policy": (ConfiguredTableAssociationAnalysisRulePolicy, True),
+        "Type": (str, True),
+    }
+
+
 class ConfiguredTableAssociation(AWSObject):
     """
     `ConfiguredTableAssociation <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cleanrooms-configuredtableassociation.html>`__
@@ -236,12 +349,102 @@ class ConfiguredTableAssociation(AWSObject):
     resource_type = "AWS::CleanRooms::ConfiguredTableAssociation"
 
     props: PropsDictType = {
+        "ConfiguredTableAssociationAnalysisRules": (
+            [ConfiguredTableAssociationAnalysisRule],
+            False,
+        ),
         "ConfiguredTableIdentifier": (str, True),
         "Description": (str, False),
         "MembershipIdentifier": (str, True),
         "Name": (str, True),
         "RoleArn": (str, True),
         "Tags": (Tags, False),
+    }
+
+
+class IdMappingTableInputReferenceConfig(AWSProperty):
+    """
+    `IdMappingTableInputReferenceConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-idmappingtable-idmappingtableinputreferenceconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "InputReferenceArn": (str, True),
+        "ManageResourcePolicies": (boolean, True),
+    }
+
+
+class IdMappingTable(AWSObject):
+    """
+    `IdMappingTable <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cleanrooms-idmappingtable.html>`__
+    """
+
+    resource_type = "AWS::CleanRooms::IdMappingTable"
+
+    props: PropsDictType = {
+        "Description": (str, False),
+        "InputReferenceConfig": (IdMappingTableInputReferenceConfig, True),
+        "KmsKeyArn": (str, False),
+        "MembershipIdentifier": (str, True),
+        "Name": (str, True),
+        "Tags": (Tags, False),
+    }
+
+
+class IdMappingConfig(AWSProperty):
+    """
+    `IdMappingConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-idnamespaceassociation-idmappingconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "AllowUseAsDimensionColumn": (boolean, True),
+    }
+
+
+class IdNamespaceAssociationInputReferenceConfig(AWSProperty):
+    """
+    `IdNamespaceAssociationInputReferenceConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-idnamespaceassociation-idnamespaceassociationinputreferenceconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "InputReferenceArn": (str, True),
+        "ManageResourcePolicies": (boolean, True),
+    }
+
+
+class IdNamespaceAssociation(AWSObject):
+    """
+    `IdNamespaceAssociation <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cleanrooms-idnamespaceassociation.html>`__
+    """
+
+    resource_type = "AWS::CleanRooms::IdNamespaceAssociation"
+
+    props: PropsDictType = {
+        "Description": (str, False),
+        "IdMappingConfig": (IdMappingConfig, False),
+        "InputReferenceConfig": (IdNamespaceAssociationInputReferenceConfig, True),
+        "MembershipIdentifier": (str, True),
+        "Name": (str, True),
+        "Tags": (Tags, False),
+    }
+
+
+class MembershipQueryComputePaymentConfig(AWSProperty):
+    """
+    `MembershipQueryComputePaymentConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-membership-membershipquerycomputepaymentconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "IsResponsible": (boolean, True),
+    }
+
+
+class MembershipPaymentConfiguration(AWSProperty):
+    """
+    `MembershipPaymentConfiguration <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-membership-membershippaymentconfiguration.html>`__
+    """
+
+    props: PropsDictType = {
+        "QueryCompute": (MembershipQueryComputePaymentConfig, True),
     }
 
 
@@ -291,7 +494,35 @@ class Membership(AWSObject):
             MembershipProtectedQueryResultConfiguration,
             False,
         ),
+        "PaymentConfiguration": (MembershipPaymentConfiguration, False),
         "QueryLogStatus": (str, True),
+        "Tags": (Tags, False),
+    }
+
+
+class Parameters(AWSProperty):
+    """
+    `Parameters <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-privacybudgettemplate-parameters.html>`__
+    """
+
+    props: PropsDictType = {
+        "Epsilon": (integer, True),
+        "UsersNoisePerQuery": (integer, True),
+    }
+
+
+class PrivacyBudgetTemplate(AWSObject):
+    """
+    `PrivacyBudgetTemplate <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-resource-cleanrooms-privacybudgettemplate.html>`__
+    """
+
+    resource_type = "AWS::CleanRooms::PrivacyBudgetTemplate"
+
+    props: PropsDictType = {
+        "AutoRefresh": (str, True),
+        "MembershipIdentifier": (str, True),
+        "Parameters": (Parameters, True),
+        "PrivacyBudgetType": (str, True),
         "Tags": (Tags, False),
     }
 
@@ -303,4 +534,36 @@ class AnalysisSchema(AWSProperty):
 
     props: PropsDictType = {
         "ReferencedTables": ([str], True),
+    }
+
+
+class IdMappingTableInputSource(AWSProperty):
+    """
+    `IdMappingTableInputSource <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-idmappingtable-idmappingtableinputsource.html>`__
+    """
+
+    props: PropsDictType = {
+        "IdNamespaceAssociationId": (str, True),
+        "Type": (str, True),
+    }
+
+
+class IdMappingTableInputReferenceProperties(AWSProperty):
+    """
+    `IdMappingTableInputReferenceProperties <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-idmappingtable-idmappingtableinputreferenceproperties.html>`__
+    """
+
+    props: PropsDictType = {
+        "IdMappingTableInputSource": ([IdMappingTableInputSource], True),
+    }
+
+
+class IdNamespaceAssociationInputReferenceProperties(AWSProperty):
+    """
+    `IdNamespaceAssociationInputReferenceProperties <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-cleanrooms-idnamespaceassociation-idnamespaceassociationinputreferenceproperties.html>`__
+    """
+
+    props: PropsDictType = {
+        "IdMappingWorkflowsSupported": (Tags, False),
+        "IdNamespaceType": (str, False),
     }

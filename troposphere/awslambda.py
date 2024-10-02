@@ -1,4 +1,4 @@
-# Copyright (c) 2012-2022, Mark Peek <mark@peek.org>
+# Copyright (c) 2012-2024, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
 # See LICENSE file for full license.
@@ -36,7 +36,7 @@ class AliasRoutingConfiguration(AWSProperty):
     """
 
     props: PropsDictType = {
-        "AdditionalVersionWeights": ([VersionWeight], True),
+        "AdditionalVersionWeights": ([VersionWeight], False),
     }
 
 
@@ -98,12 +98,13 @@ class CodeSigningConfig(AWSObject):
         "AllowedPublishers": (AllowedPublishers, True),
         "CodeSigningPolicies": (CodeSigningPolicies, False),
         "Description": (str, False),
+        "Tags": (Tags, False),
     }
 
 
 class OnFailure(AWSProperty):
     """
-    `OnFailure <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-eventinvokeconfig-destinationconfig-onfailure.html>`__
+    `OnFailure <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-eventinvokeconfig-onfailure.html>`__
     """
 
     props: PropsDictType = {
@@ -113,7 +114,7 @@ class OnFailure(AWSProperty):
 
 class OnSuccess(AWSProperty):
     """
-    `OnSuccess <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-eventinvokeconfig-destinationconfig-onsuccess.html>`__
+    `OnSuccess <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-eventinvokeconfig-onsuccess.html>`__
     """
 
     props: PropsDictType = {
@@ -262,6 +263,7 @@ class EventSourceMapping(AWSObject):
         "FilterCriteria": (FilterCriteria, False),
         "FunctionName": (str, True),
         "FunctionResponseTypes": ([str], False),
+        "KmsKeyArn": (str, False),
         "MaximumBatchingWindowInSeconds": (integer, False),
         "MaximumRecordAgeInSeconds": (integer, False),
         "MaximumRetryAttempts": (integer, False),
@@ -273,6 +275,7 @@ class EventSourceMapping(AWSObject):
         "SourceAccessConfigurations": ([SourceAccessConfiguration], False),
         "StartingPosition": (str, False),
         "StartingPositionTimestamp": (double, False),
+        "Tags": (Tags, False),
         "Topics": ([str], False),
         "TumblingWindowInSeconds": (integer, False),
     }
@@ -288,6 +291,7 @@ class Code(AWSProperty):
         "S3Bucket": (str, False),
         "S3Key": (str, False),
         "S3ObjectVersion": (str, False),
+        "SourceKMSKeyArn": (str, False),
         "ZipFile": (str, False),
     }
 
@@ -349,6 +353,19 @@ class ImageConfig(AWSProperty):
 
     def validate(self):
         validate_image_config(self)
+
+
+class LoggingConfig(AWSProperty):
+    """
+    `LoggingConfig <http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-lambda-function-loggingconfig.html>`__
+    """
+
+    props: PropsDictType = {
+        "ApplicationLogLevel": (str, False),
+        "LogFormat": (str, False),
+        "LogGroup": (str, False),
+        "SystemLogLevel": (str, False),
+    }
 
 
 class RuntimeManagementConfig(AWSProperty):
@@ -415,9 +432,10 @@ class Function(AWSObject):
         "ImageConfig": (ImageConfig, False),
         "KmsKeyArn": (str, False),
         "Layers": ([str], False),
+        "LoggingConfig": (LoggingConfig, False),
         "MemorySize": (validate_memory_size, False),
         "PackageType": (validate_package_type, False),
-        "Policy": (dict, False),
+        "RecursiveLoop": (str, False),
         "ReservedConcurrentExecutions": (integer, False),
         "Role": (str, True),
         "Runtime": (str, False),
@@ -546,6 +564,7 @@ class Version(AWSObject):
         "CodeSha256": (str, False),
         "Description": (str, False),
         "FunctionName": (str, True),
+        "Policy": (dict, False),
         "ProvisionedConcurrencyConfig": (ProvisionedConcurrencyConfiguration, False),
         "RuntimePolicy": (RuntimePolicy, False),
     }
